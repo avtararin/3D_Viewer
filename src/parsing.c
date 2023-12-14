@@ -12,6 +12,7 @@ Data parse_file(char *filename, Data *data3d) {
     *data3d = parse_values(*file, data3d);
     *data3d = find_minMax_points(data3d);
     *data3d = center_values(data3d);
+    *data3d = scale(data3d, 0.4);
   }
   return *data3d;
 }
@@ -197,6 +198,21 @@ Data center_values(Data *data3d){
     data3d->v->coord[i].x -= centerX;
     data3d->v->coord[i].y -= centerY;
     data3d->v->coord[i].z -= centerZ;
+  }
+  return *data3d;
+}
+
+Data scale(Data *data3d, double scale){
+  double dx, dy, dz, dmax;
+  dx = data3d->v->minMaxX[1] - data3d->v->minMaxX[0];
+  dy = data3d->v->minMaxY[1] - data3d->v->minMaxY[0];
+  dz = data3d->v->minMaxZ[1] - data3d->v->minMaxZ[0];
+  dmax = fmax(dx, fmax(dy, dz));
+  scale = (scale - (scale*(-1))) / dmax;
+  for (int i = 0; i < data3d->v->amount_vert; i++){
+    data3d->v->coord[i].x *= scale;
+    data3d->v->coord[i].y *= scale;
+    data3d->v->coord[i].z *= scale;
   }
   return *data3d;
 }
