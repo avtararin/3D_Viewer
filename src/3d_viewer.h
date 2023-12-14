@@ -1,7 +1,9 @@
+#include <math.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct points{
+typedef struct points {
   double x;
   double y;
   double z;
@@ -15,7 +17,7 @@ typedef struct vertex {
   int minMaxZ[2];
 } vertex;
 
-typedef struct polygon{
+typedef struct polygon {
   int *p;
   int amount_p;
 } polygon;
@@ -23,9 +25,11 @@ typedef struct polygon{
 typedef struct Data {
   vertex *v;
   polygon *p;
-  int *amount_polygon;
+  int amount_polygon;
 } Data;
 
-int parse_vertex(FILE filename, Data *data3d);
-int parse_polygon(FILE filename, Data *data3d);
-int parse_file(char *filename, Data *data3d);
+Data parse_counting(FILE filename, Data *data3d);
+Data parse_values(FILE filename, Data *data3d);
+Data parse_file(char *filename, Data *data3d);
+Data read_point_value(Data *data3d, char *line, int len, int num_of_coord);
+Data read_polygon_value(Data *data3d, char *line, int len, int num_of_polygon);
