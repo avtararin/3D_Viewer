@@ -34,3 +34,4 @@ Data parse_file(char *filename, Data *data3d);
 Data read_point_value(Data *data3d, char *line, int len, int num_of_coord);
 Data read_polygon_value(Data *data3d, char *line, int len, int num_of_polygon);
 Data find_minMax_points(Data *data3d);
+Data center_values(Data *data3d);

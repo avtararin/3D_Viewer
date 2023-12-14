@@ -11,6 +11,7 @@ Data parse_file(char *filename, Data *data3d) {
     file = fopen(filename, "r");
     *data3d = parse_values(*file, data3d);
     *data3d = find_minMax_points(data3d);
+    *data3d = center_values(data3d);
   }
   return *data3d;
 }
@@ -184,5 +185,18 @@ Data find_minMax_points(Data *data3d){
   data3d->v->minMaxY[1] = maxy;
   data3d->v->minMaxZ[0] = minz;
   data3d->v->minMaxZ[1] = maxz;
+  return *data3d;
+}
+
+Data center_values(Data *data3d){
+  double centerX = data3d->v->minMaxX[0] + (data3d->v->minMaxX[1] - data3d->v->minMaxX[0]) / 2;
+  double centerY = data3d->v->minMaxY[0] + (data3d->v->minMaxY[1] - data3d->v->minMaxY[0]) / 2;
+  double centerZ = data3d->v->minMaxZ[0] + (data3d->v->minMaxZ[1] - data3d->v->minMaxZ[0]) / 2;
+
+  for (int i = 0; i < data3d->v->amount_vert; i++){
+    data3d->v->coord[i].x -= centerX;
+    data3d->v->coord[i].y -= centerY;
+    data3d->v->coord[i].z -= centerZ;
+  }
   return *data3d;
 }
