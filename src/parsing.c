@@ -10,6 +10,7 @@ Data parse_file(char *filename, Data *data3d) {
 
     file = fopen(filename, "r");
     *data3d = parse_values(*file, data3d);
+    *data3d = find_minMax_points(data3d);
   }
   return *data3d;
 }
@@ -61,12 +62,12 @@ Data parse_values(FILE filename, Data *data3d) {
   //   printf("%lf %lf %lf \n", data3d->v->coord[i].x, data3d->v->coord[i].y,
   //          data3d->v->coord[i].z);
   // }
-    for (int i = 0; i < data3d->amount_polygon; i++) {
-      printf("\npolygon %d", i);
-      for(int j = 0; j < 3; j++){
-        printf("%d |", data3d->p[i].p[j]);
-      }
-  }
+  //   for (int i = 0; i < data3d->amount_polygon; i++) {
+  //     printf("\npolygon %d", i);
+  //     for(int j = 0; j < 3; j++){
+  //       printf("%d |", data3d->p[i].p[j]);
+  //     }
+  // }
 
   return *data3d;
 }
@@ -157,5 +158,31 @@ Data read_polygon_value(Data *data3d, char *line, int len, int num_of_polygon) {
   for(int i = 0; i <= counter; i++){
     data3d->p[num_of_polygon].p[i] = polygon_values[i];
   }
+  return *data3d;
+}
+
+Data find_minMax_points(Data *data3d){
+  double 
+  minx = data3d->v->coord[0].x,
+  maxx = data3d->v->coord[0].x,
+  miny = data3d->v->coord[0].y,
+  maxy = data3d->v->coord[0].y,
+  maxz = data3d->v->coord[0].z,
+  minz = data3d->v->coord[0].z;
+
+  for (int i = 0; i < data3d->v->amount_vert; i++){
+    if (data3d->v->coord[i].x < minx) minx = data3d->v->coord[i].x;
+    if (data3d->v->coord[i].x > maxx) maxx = data3d->v->coord[i].x;
+    if (data3d->v->coord[i].y < miny) miny = data3d->v->coord[i].y;
+    if (data3d->v->coord[i].y > maxy) maxy = data3d->v->coord[i].y;
+    if (data3d->v->coord[i].z < minz) minz = data3d->v->coord[i].z;
+    if (data3d->v->coord[i].z > maxz) maxz = data3d->v->coord[i].z;
+  }
+  data3d->v->minMaxX[0] = minx;
+  data3d->v->minMaxX[1] = maxx;
+  data3d->v->minMaxY[0] = miny;
+  data3d->v->minMaxY[1] = maxy;
+  data3d->v->minMaxZ[0] = minz;
+  data3d->v->minMaxZ[1] = maxz;
   return *data3d;
 }

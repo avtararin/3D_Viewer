@@ -12,9 +12,9 @@ typedef struct points {
 typedef struct vertex {
   int amount_vert;
   points *coord;
-  int minMaxX[2];
-  int minMaxY[2];
-  int minMaxZ[2];
+  double minMaxX[2];
+  double minMaxY[2];
+  double minMaxZ[2];
 } vertex;
 
 typedef struct polygon {
@@ -33,3 +33,4 @@ Data parse_values(FILE filename, Data *data3d);
 Data parse_file(char *filename, Data *data3d);
 Data read_point_value(Data *data3d, char *line, int len, int num_of_coord);
 Data read_polygon_value(Data *data3d, char *line, int len, int num_of_polygon);
+Data find_minMax_points(Data *data3d);
